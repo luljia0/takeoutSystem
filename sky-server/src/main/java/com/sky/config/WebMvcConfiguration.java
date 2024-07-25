@@ -38,15 +38,17 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     }
 
     /**
-     * 通过knife4j生成接口文档
+     * generate api doc by knife4j
      * @return
      */
     @Bean
     public Docket docket() {
+        // api page info
+        log.info("Starting to generate api documentation") ;
         ApiInfo apiInfo = new ApiInfoBuilder()
-                .title("苍穹外卖项目接口文档")
+                .title("Api Doc for Sky Take_out")
                 .version("2.0")
-                .description("苍穹外卖项目接口文档")
+                .description("Api Doc for Sky Take_out")
                 .build();
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo)
@@ -58,7 +60,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     }
 
     /**
-     * 设置静态资源映射
+     * map with static html
      * @param registry
      */
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {

@@ -7,13 +7,13 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-@ApiModel(description = "员工登录时传递的数据模型")
+@ApiModel(description = "// DTO used to transfer user input login data from front-end to back-end")
 public class EmployeeLoginDTO implements Serializable {
 
-    @ApiModelProperty("用户名")
+    @ApiModelProperty("username")
     private String username;
 
-    @ApiModelProperty("密码")
+    @ApiModelProperty("password ")
     private String password;
 
 }

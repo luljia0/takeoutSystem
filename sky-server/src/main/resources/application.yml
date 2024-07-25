@@ -31,9 +31,9 @@ logging:
 
 sky:
   jwt:
-    # 设置jwt签名加密时使用的秘钥
+    # set admin secret key for jwt token
     admin-secret-key: itcast
-    # 设置jwt过期时间
+    # set expiration time for jwt
     admin-ttl: 7200000
-    # 设置前端传递过来的令牌名称
+    # set the name of token passed from frontend
     admin-token-name: token
