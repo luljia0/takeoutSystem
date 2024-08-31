@@ -1,6 +1,7 @@
 package com.sky.interceptor;
 
 import com.sky.constant.JwtClaimsConstant;
+import com.sky.context.BaseContext;
 import com.sky.properties.JwtProperties;
 import com.sky.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -38,19 +39,22 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        //1、从请求头中获取令牌
+        //1、get token from  request header
         String token = request.getHeader(jwtProperties.getAdminTokenName());
 
-        //2、校验令牌
+        //2、jwt check
         try {
-            log.info("jwt校验:{}", token);
+            log.info("jwt check:{}", token);
             Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
+            // parse empId from jwt token, save it into ThreadLocal so that it can be shared in the same thread
             Long empId = Long.valueOf(claims.get(JwtClaimsConstant.EMP_ID).toString());
-            log.info("当前员工id：", empId);
-            //3、通过，放行
+            BaseContext.setCurrentId(empId);
+            log.info("current employee id：", empId);
+
+            //3. pass
             return true;
         } catch (Exception ex) {
-            //4、不通过，响应401状态码
+            //4、not pass, return 401 status code
             response.setStatus(401);
             log.info(ex.getMessage());
             return false;

@@ -3,6 +3,7 @@ package com.sky.service.impl;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
+import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.entity.Employee;
@@ -74,9 +75,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setUpdateTime(LocalDateTime.now());
         employee.setCreateTime(LocalDateTime.now());
 
-        // TODO set up createUser and updateUser
-        employee.setCreateUser(10L);
-        employee.setUpdateUser(10L);
+        // set up createUser and updateUser using ThreadLocal
+        Long currentId = BaseContext.getCurrentId();
+        employee.setCreateUser(currentId);
+        employee.setUpdateUser(currentId);
 
         // save it to database
         employeeMapper.insert(employee);
