@@ -1,6 +1,7 @@
 package com.sky.controller.admin;
 
 import com.sky.constant.JwtClaimsConstant;
+import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.entity.Employee;
 import com.sky.properties.JwtProperties;
@@ -54,6 +55,7 @@ public class EmployeeController {
                 jwtProperties.getAdminSecretKey(),
                 jwtProperties.getAdminTtl(),
                 claims);
+        log.info("JWT token" + token);
         // generate an employee VO to frontend
         EmployeeLoginVO employeeLoginVO = EmployeeLoginVO.builder()
                 .id(employee.getId())
@@ -66,7 +68,7 @@ public class EmployeeController {
     }
 
     /**
-     * 退出
+     * log out
      *
      * @return
      */
@@ -75,5 +77,19 @@ public class EmployeeController {
     public Result<String> logout() {
         return Result.success();
     }
+
+    /**
+     * add employee
+     * @param employeeDTO
+     * @return
+     */
+    @ApiOperation("add new employee")
+    @PostMapping
+    public Result save(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("Add new employee");
+        employeeService.save(employeeDTO);
+        return Result.success();
+    }
+
 
 }
