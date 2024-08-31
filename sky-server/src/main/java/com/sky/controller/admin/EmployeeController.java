@@ -55,7 +55,7 @@ public class EmployeeController {
                 jwtProperties.getAdminSecretKey(),
                 jwtProperties.getAdminTtl(),
                 claims);
-        log.info("JWT token" + token);
+        log.info("JWT token: {}", token);
         // generate an employee VO to frontend
         EmployeeLoginVO employeeLoginVO = EmployeeLoginVO.builder()
                 .id(employee.getId())
