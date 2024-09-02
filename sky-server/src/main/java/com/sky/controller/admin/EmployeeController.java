@@ -117,5 +117,25 @@ public class EmployeeController {
         return Result.success();
     }
 
+    /**
+     *  employee id query
+     * @param id
+     * @return
+     */
+    @ApiOperation("employee id query")
+    @GetMapping("/{id}")
+    public Result<Employee> idQuery(@PathVariable long id) {
+        log.info("employee id query:{}", id);
+        Employee employee = employeeService.idQuery(id);
+        return Result.success(employee);
+    }
+    @ApiOperation("edit employee info")
+    @PutMapping
+    public Result editEmp(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("editEmp employeeDTO:{}", employeeDTO);
+        employeeService.editEmp(employeeDTO);
+        return Result.success();
+    }
+
 
 }
