@@ -90,12 +90,31 @@ public class EmployeeController {
         return Result.success();
     }
 
+    /**
+     * employee paging query
+     * @param employeePageQueryDTO
+     * @return
+     */
     @ApiOperation("employee paging query")
     @GetMapping("page")
     public Result<PageResult> page(EmployeePageQueryDTO employeePageQueryDTO) {
         PageResult page =  employeeService.pageQuery(employeePageQueryDTO);
-        log.info("Employee paging query result: {}", page);
+        log.info("Employee paging query:" + employeePageQueryDTO.getPage() +   employeePageQueryDTO.getPageSize());
         return Result.success(page);
+    }
+
+    /**
+     * update employee status
+     * @param status
+     * @param id
+     * @return
+     */
+    @ApiOperation("update employee status")
+    @PostMapping("/status/{status}")
+    public  Result status(@PathVariable Integer status, long id) {
+        log.info("update employee status");
+        employeeService.startOrStop(status, id);
+        return Result.success();
     }
 
 
