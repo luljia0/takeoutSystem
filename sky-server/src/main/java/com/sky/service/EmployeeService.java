@@ -39,7 +39,7 @@ public interface EmployeeService {
      * @param id
      * @return
      */
-    Employee idQuery(long id);
+    Employee getEmpById(long id);
 
     /**
      * edit employee info

@@ -126,7 +126,7 @@ public class EmployeeController {
     @GetMapping("/{id}")
     public Result<Employee> idQuery(@PathVariable long id) {
         log.info("employee id query:{}", id);
-        Employee employee = employeeService.idQuery(id);
+        Employee employee = employeeService.getEmpById(id);
         return Result.success(employee);
     }
     @ApiOperation("edit employee info")
