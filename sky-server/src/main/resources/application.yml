@@ -37,3 +37,8 @@ sky:
     admin-ttl: 7200000000000
     # set the name of token passed from frontend
     admin-token-name: token
+  s3:
+    region: ${sky.s3.region}
+    access-key-id: ${sky.s3.access-key-id}
+    access-key-secret: ${sky.s3.access-key-secret}
+    bucket-name: ${sky.s3.bucket-name}
