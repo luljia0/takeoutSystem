@@ -2,12 +2,17 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.MessageConstant;
+import com.sky.constant.StatusConstant;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
+import com.sky.entity.Setmeal;
+import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
+import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
@@ -23,6 +28,9 @@ public class DishServiceImpl implements DishService {
     DishMapper dishMapper;
     @Autowired
     DishFlavorMapper dishFlavorMapper;
+    @Autowired
+    private SetmealMapper setmealMapper;
+
     @Override
     public void saveWithFlavor(DishDTO dishDTO) {
         // save dish to dish table
@@ -57,6 +65,35 @@ public class DishServiceImpl implements DishService {
         Page<DishVO> page = dishMapper.pageQuery(dishPageQueryDTO);
 
         return new PageResult(page.getTotal(), page.getResult());
+
+
+    }
+
+    @Override
+    public void deleteBatch(List<Long> ids) {
+
+        for(Long id : ids){
+            Dish dish = dishMapper.getById(id);
+            // decide the status of dishes, dishes on sale can't be deleted
+            if(dish.getStatus() == StatusConstant.ENABLE) {
+                throw new DeletionNotAllowedException(MessageConstant.DISH_ON_SALE);
+            }
+
+            // TODO: delete dishes and flavors in a single sql request instead of doing it in a for loop
+            // decide whether the dish is being in a set, if yes, can't be deleted
+            List<Long> setmealIds = setmealMapper.getSetmealIdByDishId(id);
+            if(setmealIds != null && setmealIds.size() > 0){
+                throw new DeletionNotAllowedException(dish.getName() + MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
+            }
+
+            // delete the dishes
+            dishMapper.deleteById(id);
+
+            // delete the flavors wired with dishes
+            dishFlavorMapper.deleteByDishId(id);
+
+
+        }
 
 
     }

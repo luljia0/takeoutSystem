@@ -29,3 +29,7 @@ Note that:
 
 
 
+#### generated key return
+
+add `generatedKeyReturn` and `keyProperty` property in SQL tags to return the generated key after inserting key 
+
