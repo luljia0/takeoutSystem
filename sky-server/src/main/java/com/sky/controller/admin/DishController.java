@@ -2,7 +2,6 @@ package com.sky.controller.admin;
 
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
-import com.sky.mapper.DishMapper;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
@@ -43,6 +42,20 @@ public class DishController {
     public Result delete(@RequestParam List<Long> ids) {
         log.info("delete dish" + ids.toString());
         dishService.deleteBatch(ids);
+        return Result.success();
+    }
+    @GetMapping("/{id}")
+    @ApiOperation("get dish by id")
+    public Result<DishVO> getById(@PathVariable Long id) {
+        log.info("get Dish by id" + id);
+        DishVO dishVO = dishService.getByIdWithFlavor(id);
+        return Result.success(dishVO);
+    }
+    @PutMapping
+    @ApiOperation("update dish info")
+    public Result update(@RequestBody DishDTO dishDTO) {
+        log.info("update dish" + dishDTO.toString());
+        dishService.updateWithFlavor(dishDTO);
         return Result.success();
     }
 }

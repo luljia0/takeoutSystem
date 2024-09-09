@@ -8,7 +8,6 @@ import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
-import com.sky.entity.Setmeal;
 import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
@@ -96,5 +95,34 @@ public class DishServiceImpl implements DishService {
         }
 
 
+    }
+
+    @Override
+    public DishVO getByIdWithFlavor(Long id) {
+        // get dish
+        Dish dish = dishMapper.getById(id);
+
+        // get flavors
+        List<DishFlavor> flavors = dishFlavorMapper.getFlavorByDishId(id);
+
+        // construct dishVO
+        DishVO dishVO = new DishVO();
+        BeanUtils.copyProperties(dish, dishVO);
+        dishVO.setFlavors(flavors);
+        return dishVO;
+    }
+
+    @Override
+    public void updateWithFlavor(DishDTO dishDTO) {
+        // update dish
+        Dish dish = new Dish();
+        BeanUtils.copyProperties(dishDTO, dish);
+        dishMapper.update(dish);
+
+        // delete original flavors
+        dishFlavorMapper.deleteByDishId(dish.getId());
+
+        // add new flavors
+        dishFlavorMapper.insertBatch(dishDTO.getFlavors());
     }
 }
