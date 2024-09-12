@@ -20,7 +20,7 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping("/admin/common")
-@Api("common Api")
+@Api(tags = "Common Apis")
 public class CommonController {
     @Autowired
     S3Util s3Util;
