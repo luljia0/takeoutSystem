@@ -8,7 +8,9 @@ import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
+import com.sky.entity.Setmeal;
 import com.sky.exception.DeletionNotAllowedException;
+import com.sky.exception.DishDisableFailedException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealMapper;
@@ -133,5 +135,22 @@ public class DishServiceImpl implements DishService {
                 .status(StatusConstant.ENABLE)
                 .build();
         return dishMapper.list(dish);
+    }
+
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        // when trying to disable a dish, decide whether it belongs to the setmeal
+        if(status == StatusConstant.DISABLE){
+            // get setmeal data by joining the setmeal table and setmeal_dish table
+            List<Setmeal> setmeals = setmealMapper.getByDishId(id);
+            if(setmeals != null && setmeals.size() > 0){
+                throw new DishDisableFailedException(MessageConstant.DISH_DISABLE_FAILURE);
+            }
+        }
+        Dish dish = Dish.builder()
+                .id(id)
+                .status(status)
+                .build();
+        dishMapper.update(dish);
     }
 }

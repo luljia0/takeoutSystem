@@ -80,4 +80,10 @@ public class SetmealController {
         setmealService.update(setmealDTO);
         return Result.success();
     }
+    @PostMapping("/status/{status}")
+    @ApiOperation("start or stop selling setmeal")
+    public Result startOrStop(@PathVariable Integer status, Long id) {
+        setmealService.startOrStop(status, id);
+        return Result.success();
+    }
 }

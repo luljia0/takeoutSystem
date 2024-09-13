@@ -43,4 +43,7 @@ public interface SetmealMapper {
 
     @AutoFill(OperationType.UPDATE)
     void update(Setmeal setmeal);
+
+    @Select("SELECT a.* FROM setmeal a left join setmeal_dish b on a.id = b.setmeal_id WHERE b.dish_id = #{dishId}" )
+    List<Setmeal> getByDishId(Long dishId);
 }
