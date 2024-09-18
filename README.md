@@ -33,3 +33,9 @@ Note that:
 
 add `generatedKeyReturn` and `keyProperty` property in SQL tags to return the generated key after inserting key 
 
+### Day06 wechat login
+
+1. Configue jwt properties for user authentication
+2. configue wechat properties for user login
+3. implemet controller, service and mapper
+4. Update jwtInterceptor and webconfiguration

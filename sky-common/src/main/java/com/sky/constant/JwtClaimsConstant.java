@@ -1,5 +1,5 @@
 package com.sky.constant;
-
+// keys to put in the claim to generate jwt token as unique key for each token
 public class JwtClaimsConstant {
 
     public static final String EMP_ID = "empId";
